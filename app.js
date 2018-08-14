@@ -104,19 +104,31 @@ function showMenuItems() {
 
 }
 
-function countSodium() {
+function addSodium() {
   var itemSodium = parseInt($(this).attr("data-sodium"));
   var itemName = $(this).attr("data-name");
 
   sodiumIntake += itemSodium;
   $("#running-total").text(sodiumIntake);
 
+  // ADDS COUNTED ITEM TO DAILY OVERVIEW:
   var newLi = $('<li class="list-group-item">');
-  var nameSpan= $('<span>' + itemName + '</span>')
+  var closeSpan = $('<span id="close-button" class="close float-left">&times;</span>');
+  var nameSpan= $('<span class="float-center">' + itemName + '</span>');
   var sodiumSpan= $('<span class="text-muted float-right sodium-mg">' + itemSodium + '</span>');
 
-  newLi.append(nameSpan).append(sodiumSpan);
+  newLi.append(closeSpan).append(nameSpan).append(sodiumSpan);
   $("#sodium-items").append(newLi);
+}
+
+function subtractSodium() {
+  var itemSodium = $(this).siblings('.sodium-mg').text();
+  sodiumIntake -= itemSodium;
+  $("#running-total").text(sodiumIntake);
+  $(this).parent().remove();
+
+
+
 }
 
 
@@ -128,7 +140,6 @@ function showSodiumCount() {
   } else {
     $(this).attr("data-toggle", "closed");
     $("#sodium-items").hide();
-
   }
 }
 
@@ -138,6 +149,7 @@ $(document).ready(function(){
 
 
   $(document).on("click", ".restaurant-image", showMenuItems);
-  $(document).on("click", ".menu-item", countSodium);
-  $(document).on("click", "#total-card", showSodiumCount);
+  $(document).on("click", ".card-header", showSodiumCount);
+  $(document).on("click", ".menu-item", addSodium);
+  $(document).on("click", "#close-button", subtractSodium);
 });
