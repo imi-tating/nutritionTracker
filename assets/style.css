@@ -11,13 +11,18 @@
 }
 
 #restaurant-bin {
+  max-height: 8rem;
   padding: .6rem;
-  /* backgsround-color: green; */
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .restaurant-image {
-  /* border-radius: 50%; */
   margin: .1rem;
   width: 7rem;
   height: 7rem;
+}
+
+.menu-item {
+  font-size: .9rem;
 }

@@ -1,4 +1,5 @@
 var sodiumIntake = 0;
+var todaysMenuItems = [];
 var restaurants = {
   starbucks: {
     toffeeNutLatte: {
@@ -71,8 +72,71 @@ var restaurants = {
     },
 
     // recommendations: "Swap Fresh Tomato Salsa (550mg) for Roasted Chili-Corn Salsa (330mg). Cut out the tortilla (600mg) by having a Burrito Bowl instead of the Burrito."
-  }
+  },
 
+  jambajuice: {
+    mandoAGoGo: {
+      name: "Mango-A-Go-Go",
+      sodium: 60
+    },
+
+    orangeC: {
+      name: "Orange C-Booster",
+      sodium: 30
+    },
+
+    orangeCarrot: {
+      name: "Orange Carrot Karma",
+      sodium: 150
+    },
+
+    acai: {
+      name: "Açaí Super Antioxidant",
+      sodium: 115
+    },
+
+    pBMood: {
+      name: "Peanut Butter Moo'd",
+      sodium: 480
+    },
+
+    oatmeal: {
+      name: "Steel-Cut Oatmeal + Banana/BrownSugar",
+      sodium: 15
+    }
+  },
+
+  brueggers: {
+    blueberryBagel: {
+      name: "Blueberry Bagel + Cream Cheese",
+      sodium: 625
+    },
+
+    cranberryBagel: {
+      name: "Cranberry Bagel + Cream Cheese",
+      sodium: 625
+    },
+
+    cinnamonRaisinBagel: {
+      name: "Cinnamon Raisin Bagel + Cream Cheese",
+      sodium: 605
+    },
+
+    RosemaryOliveOilBagel: {
+      name: "Rosemary Olive Oil Bagel + Cream Cheese",
+      sodium: 635
+    },
+
+    eggCheeseCranberryBagel: {
+      name: "Egg Cheese on Cranberry Bagel",
+      sodium: 940
+    },
+
+    eggCheeseRosemaryOliveOilBagel: {
+      name: "Egg Cheese on Rosemary Olive Oil Bagel",
+      sodium: 950
+    }
+  }
 }
 
 function showMenuItems() {
@@ -104,33 +168,40 @@ function showMenuItems() {
 
 }
 
-function addSodium() {
-  var itemSodium = parseInt($(this).attr("data-sodium"));
-  var itemName = $(this).attr("data-name");
-
+function addSodium(itemSodium, itemName) {
   sodiumIntake += itemSodium;
   $("#running-total").text(sodiumIntake);
 
   // ADDS COUNTED ITEM TO DAILY OVERVIEW:
   var newLi = $('<li class="list-group-item">');
   var closeSpan = $('<span id="close-button" class="close float-left">&times;</span>');
-  var nameSpan= $('<span class="float-center">' + itemName + '</span>');
+  var nameSpan= $('<span class="float-center item-name">' + itemName + '</span>');
   var sodiumSpan= $('<span class="text-muted float-right sodium-mg">' + itemSodium + '</span>');
 
   newLi.append(closeSpan).append(nameSpan).append(sodiumSpan);
   $("#sodium-items").append(newLi);
+
+  //ADD COUNTED ITEM TO LOCAL STORAGE:
+  todaysMenuItems.push({itemSodium: itemSodium, itemName: itemName});
+  localStorage.setItem("menuItems", JSON.stringify(todaysMenuItems));
+}
+
+function handleMenuItemClick() {
+  var itemSodium = parseInt($(this).attr("data-sodium"));
+  var itemName = $(this).attr("data-name");
+
+  addSodium(itemSodium, itemName)
 }
 
 function subtractSodium() {
   var itemSodium = $(this).siblings('.sodium-mg').text();
+  var itemName = $(this).siblings('.item-name').text();
+
   sodiumIntake -= itemSodium;
   $("#running-total").text(sodiumIntake);
   $(this).parent().remove();
-
-
-
+  localStorage.removeItem(itemName);
 }
-
 
 function showSodiumCount() {
   if ($(this).attr("data-toggle") === "closed") {
@@ -143,13 +214,25 @@ function showSodiumCount() {
   }
 }
 
+function addFromLocalStorage() {
+  var previousMenuItems = JSON.parse(localStorage.getItem("menuItems"));
+  if (previousMenuItems) {
+    previousMenuItems.forEach(function(eachItem){
+      addSodium(eachItem.itemSodium, eachItem.itemName)
+    });
+    todaysMenuItems = previousMenuItems;
+  }
+}
+
 $(document).ready(function(){
   $("#running-total").append(sodiumIntake);
   $("#sodium-items").hide();
 
+  addFromLocalStorage();
+
 
   $(document).on("click", ".restaurant-image", showMenuItems);
   $(document).on("click", ".card-header", showSodiumCount);
-  $(document).on("click", ".menu-item", addSodium);
+  $(document).on("click", ".menu-item", handleMenuItemClick);
   $(document).on("click", "#close-button", subtractSodium);
 });
