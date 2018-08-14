@@ -15,16 +15,17 @@
   <title>Nutrition Tracker</title>
 </head>
 <body>
-  <div id="total-card" class="card bg-light">
-    <p class="card-text text-center">Today's Sodium Intake: <span id="running-total"></span></p>
+  <div id="total-card" class="card clickable" data-toggle="closed">
+    <div class="card-header text-center">Today's Sodium Intake: <span id="running-total"></span></div>
+    <ul id="sodium-items" class="list-group list-group-flush"></ul>
   </div>
   <div id="restaurant-bin">
 
-      <img id="starbucks" class="img-thumbnail text-center clickable restaurant-image" src="assets/images/starbucks-image.png" alt="Starbucks logo">
+      <img id="starbucks" class="img-thumbnail text-center clickable restaurant-image" data-toggle="closed" src="assets/images/starbucks-image.png" alt="Starbucks logo">
 
       <!-- <img class="img-thumbnail text-center clickable restaurant-image" src="assets/images/jamba-image.png" alt="Jamba Juice logo"> -->
 
-      <img id="chipotle" class="img-thumbnail text-center clickable restaurant-image" src="assets/images/chipotle-image.png" alt="Chipotle logo">
+      <img id="chipotle" class="img-thumbnail text-center clickable restaurant-image" data-toggle="closed" src="assets/images/chipotle-image.png" alt="Chipotle logo">
 
   </div>
   <hr>

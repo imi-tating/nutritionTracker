@@ -79,41 +79,65 @@ function showMenuItems() {
   $("#menu-items-bin").empty();
   var chosenRestaurantMenu = restaurants[$(this).attr("id")];
 
-  for (var i = 0; i < Object.keys(chosenRestaurantMenu).length; i++) {
-    var newCard = $('<div class="card clickable menu-item">');
-    var newCardBody = $('<div class="card-body">');
+  if ($(this).attr("data-toggle") === "closed") {
+    $(".restaurant-image").attr("data-toggle", "closed");
+    $(this).attr("data-toggle", "open");
+    for (var i = 0; i < Object.keys(chosenRestaurantMenu).length; i++) {
+      var newCard = $('<div class="card clickable menu-item">');
+      var newCardBody = $('<div class="card-body">');
 
-    var menuItem = chosenRestaurantMenu[Object.keys(chosenRestaurantMenu)[i]]
-    var itemName = menuItem.name;
-    var itemSodium = menuItem.sodium;
+      var menuItem = chosenRestaurantMenu[Object.keys(chosenRestaurantMenu)[i]]
+      var itemName = menuItem.name;
+      var itemSodium = menuItem.sodium;
 
-    var nameSpan= $('<span>' + itemName + '</span>')
-    var sodiumSpan= $('<span class="text-muted float-right sodium-mg">' + itemSodium + '</span>');
+      var nameSpan= $('<span>' + itemName + '</span>')
+      var sodiumSpan= $('<span class="text-muted float-right sodium-mg">' + itemSodium + '</span>');
 
-    newCardBody.append(nameSpan).append(sodiumSpan);
-    newCard.append(newCardBody);
-    newCard.attr("data-sodium", itemSodium);
-    $("#menu-items-bin").append(newCard);
+      newCardBody.append(nameSpan).append(sodiumSpan);
+      newCard.append(newCardBody);
+      newCard.attr("data-sodium", itemSodium).attr("data-name", itemName);
+      $("#menu-items-bin").append(newCard);
+    }
+  } else {
+    $(this).attr("data-toggle", "closed");
   }
 
 }
 
 function countSodium() {
-  var itemSodim = parseInt($(this).attr("data-sodium"));
-  console.log(itemSodim);
+  var itemSodium = parseInt($(this).attr("data-sodium"));
+  var itemName = $(this).attr("data-name");
 
-  sodiumIntake += itemSodim;
+  sodiumIntake += itemSodium;
   $("#running-total").text(sodiumIntake);
+
+  var newLi = $('<li class="list-group-item">');
+  var nameSpan= $('<span>' + itemName + '</span>')
+  var sodiumSpan= $('<span class="text-muted float-right sodium-mg">' + itemSodium + '</span>');
+
+  newLi.append(nameSpan).append(sodiumSpan);
+  $("#sodium-items").append(newLi);
+}
+
+
+function showSodiumCount() {
+  if ($(this).attr("data-toggle") === "closed") {
+    $(this).attr("data-toggle", "open");
+    $("#sodium-items").show();
+
+  } else {
+    $(this).attr("data-toggle", "closed");
+    $("#sodium-items").hide();
+
+  }
 }
 
 $(document).ready(function(){
   $("#running-total").append(sodiumIntake);
-
-
+  $("#sodium-items").hide();
 
 
   $(document).on("click", ".restaurant-image", showMenuItems);
   $(document).on("click", ".menu-item", countSodium);
-
-
+  $(document).on("click", "#total-card", showSodiumCount);
 });
