@@ -161,6 +161,51 @@ var restaurants = {
       sodium: 950,
       portion: 1
     }
+  },
+
+  athome: {
+    largeEgg: {
+      name: "Large Egg",
+      sodium: 62,
+      portion: 1
+    },
+
+    mediumBanana: {
+      name: "Medium Banana",
+      sodium: 1,
+      portion: 1
+    },
+
+    canCocaCola: {
+      name: "Coca-Cola (12oz can)",
+      sodium: 50,
+      portion: 1
+    },
+
+    veganCookies: {
+      name: "TJ Oatmeal Chocolate Chip Cookie",
+      sodium: 110,
+      portion: 1
+    },
+
+    stringCheese: {
+      name: "String Cheese",
+      sodium: 170,
+      portion: 1
+    },
+
+    peanutButter: {
+      name: "PeanutButter (2tbsp) ",
+      sodium: 100,
+      portion: 1
+    },
+
+    lentilSalad: {
+      name: "Lentil Salad",
+      sodium: 428,
+      portion: 1
+    }
+
   }
 }
 
@@ -192,7 +237,6 @@ function showMenuItems() {
   } else {
     $(this).attr("data-toggle", "closed");
   }
-
 }
 
 function addSodium(itemSodium, itemName, itemId) {
@@ -241,8 +285,10 @@ function cookieClick(event) {
     $(this).parents(".card").attr("data-portion", 1);
     var fullSodium = $(this).parents(".card").attr("data-sodium");
     $(this).parents(".row").children(".sodium-mg").text(fullSodium);
-
   }
+  // FULL AND HALF CIRCLE - ALTERNATIVE ICONS:
+  // <i class="fas fa-adjust"></i>
+  // <i class="fas fa-circle"></i>
 }
 
 function subtractSodium() {
@@ -265,10 +311,12 @@ function showSodiumCount() {
   if ($(this).attr("data-toggle") === "closed") {
     $(this).attr("data-toggle", "open");
     $("#sodium-items").show();
+    $(".card-footer").show();
 
   } else {
     $(this).attr("data-toggle", "closed");
     $("#sodium-items").hide();
+    $(".card-footer").hide();
   }
 }
 
@@ -285,9 +333,9 @@ function addFromLocalStorage() {
 $(document).ready(function(){
   $("#running-total").append(sodiumIntake);
   $("#sodium-items").hide();
+  $(".card-footer").hide();
 
   addFromLocalStorage();
-
 
   $(document).on("click", ".restaurant-image", showMenuItems);
   $(document).on("click", ".card-header", showSodiumCount);
