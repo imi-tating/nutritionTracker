@@ -28,6 +28,10 @@
   height: 7rem;
 }
 
+hr {
+  margin-bottom: 0;
+}
+
 .menu-item {
   font-size: .9rem;
 }
