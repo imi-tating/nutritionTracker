@@ -26,3 +26,8 @@
 .menu-item {
   font-size: .9rem;
 }
+
+.sodium-mg, .fas {
+  padding-right: 1rem;
+  width: 3rem;
+}
