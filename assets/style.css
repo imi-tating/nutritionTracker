@@ -1,3 +1,8 @@
+.blank {
+  height: 3rem;
+  border: 0;
+}
+
 #total-card {
   margin-bottom: .7rem;
 }
